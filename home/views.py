@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from home.models import Contact
+from django.core.mail import send_mail
 
 # Create your views here.
 def home(request):
@@ -22,6 +23,18 @@ def contact(request):
         ins = Contact(name=name, email=email, phone=phone, desc=desc)
         ins.save()
         print("Db is written")
+        send_mail(
+            "Details",
+            f"""
+                Name: {name},
+                Email: {email}
+                Phone: {phone}
+                Description: {desc}
+            """,
+            "290anamika@gmail.com",
+            ["madhusudhanar2020@gmail.com"],
+            fail_silently=False,
+        )
     # return HttpResponse("This is contact Page")
     return render(request,'contact.html')
 
